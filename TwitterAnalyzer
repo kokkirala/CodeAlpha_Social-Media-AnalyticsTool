@@ -1,0 +1,48 @@
+#TwitterAnalyzer
+import twitter4j.*;
+import twitter4j.conf.ConfigurationBuilder;
+
+import java.util.List;
+
+public class TwitterAnalyzer {
+
+    public static void main(String[] args) {
+        // Replace with your Twitter API credentials
+        String consumerKey = "your-consumer-key";
+        String consumerSecret = "your-consumer-secret";
+        String accessToken = "your-access-token";
+        String accessTokenSecret = "your-access-token-secret";
+
+        // Set up Twitter API configuration
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        configurationBuilder.setDebugEnabled(true)
+                .setOAuthConsumerKey(consumerKey)
+                .setOAuthConsumerSecret(consumerSecret)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret);
+
+        TwitterFactory twitterFactory = new TwitterFactory(configurationBuilder.build());
+        Twitter twitter = twitterFactory.getInstance();
+
+        // Replace "your-hashtag" with the desired hashtag
+        String hashtag = "your-hashtag";
+
+        try {
+            // Search for tweets containing the specified hashtag
+            Query query = new Query("#" + hashtag);
+            QueryResult result = twitter.search(query);
+
+            List<Status> tweets = result.getTweets();
+
+            // Basic analysis: Print tweet text and username
+            for (Status tweet : tweets) {
+                System.out.println("@" + tweet.getUser().getScreenName() + ": " + tweet.getText());
+            }
+
+            // Additional analysis can be performed, such as sentiment analysis, user engagement, etc.
+
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+    }
+}
